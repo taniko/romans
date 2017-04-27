@@ -1,0 +1,29 @@
+{
+    "name": "taniko/romans",
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "symfony/polyfill-mbstring": "^1.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1",
+        "squizlabs/php_codesniffer": "^2.8"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuya Aratani",
+            "email": "hrgruri@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Taniko\\Romans\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
