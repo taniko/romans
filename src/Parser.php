@@ -1,6 +1,8 @@
 <?php
 namespace Taniko\Romans;
 
+use Symfony\Polyfill\Mbstring\Mbstring;
+
 class Parser
 {
     private static $romans = [
@@ -44,6 +46,16 @@ class Parser
     }
 
     /**
+     * convert decimal to small roman numerals
+     * @param  int    $num decimal
+     * @return string      roman numerals
+     */
+    public static function toSmallRoman(int $num) : string
+    {
+        return strtolower(self::toRoman($num));
+    }
+
+    /**
      * return splited string
      * @param  string $str string
      * @return array       splited string
@@ -54,17 +66,6 @@ class Parser
     }
 
     /**
-     * return UTF-8 value of character
-     * @param  string $str a character
-     * @param  string $enc encoding
-     * @return int         UTF-8 value
-     */
-    private static function ord(string $str, string $enc = null) : int
-    {
-        return \Symfony\Polyfill\Mbstring\Mbstring::mb_ord($str, $enc);
-    }
-
-    /**
      * replace UTF-8 roman numerals
      * @param  string $str roman numerals
      * @return string      roman numerals
@@ -72,13 +73,7 @@ class Parser
     public static function replaceRoman(string $str) : string
     {
         $str = self::strToArray($str);
-        foreach ($str as $key => $value) {
-            $code = self::ord($value);
-            if ($code >= 8544 && $code <= 8555) {
-                $str[$key] = self::toRoman($code - 8543);
-            }
-        }
-        return implode('', $str);
+        return implode('', self::replaceRomanArray($str));
     }
 
     /**
@@ -89,9 +84,40 @@ class Parser
     public static function replaceRomanArray(array $str) : array
     {
         foreach ($str as $key => $value) {
-            $code = self::ord($value);
+            $code = Mbstring::mb_ord($value);
             if ($code >= 8544 && $code <= 8555) {
                 $str[$key] = self::toRoman($code - 8543);
+            } elseif ($code >= 8560 && $code <= 8571) {
+                $str[$key] = self::toSmallRoman($code - 8559);
+            } else {
+                switch ($code) {
+                    case 8556:
+                        $str[$key] = self::toRoman(50);
+                        break;
+                    case 8557:
+                        $str[$key] = self::toRoman(100);
+                        break;
+                    case 8558:
+                        $str[$key] = self::toRoman(500);
+                        break;
+                    case 8559:
+                        $str[$key] = self::toRoman(1000);
+                        break;
+                    case 8572:
+                        $str[$key] = self::toSmallRoman(50);
+                        break;
+                    case 8573:
+                        $str[$key] = self::toSmallRoman(100);
+                        break;
+                    case 8574:
+                        $str[$key] = self::toSmallRoman(500);
+                        break;
+                    case 8575:
+                        $str[$key] = self::toSmallRoman(1000);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         return $str;

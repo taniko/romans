@@ -26,5 +26,6 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals('I', Parser::replaceRoman('Ⅰ'));
         $this->assertEquals('X', Parser::replaceRoman('Ⅹ'));
+        $this->assertEquals('mi', Parser::replaceRoman('ⅿⅰ'));
     }
 }
