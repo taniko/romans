@@ -13,6 +13,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(10, Parser::toInt('Ⅹ'));
         $this->assertEquals(2017, Parser::toInt('MMXVII'));
         $this->assertEquals(2017, Parser::toInt('MMⅩVII'));
+        $this->assertEquals(2017, Parser::toInt('MMＸVII'));
     }
 
     public function testToRoman()

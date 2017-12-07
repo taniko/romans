@@ -19,7 +19,7 @@ class Parser
     public static function toInt(string $str) : int
     {
         $result = 0;
-        $str    = self::replaceRoman($str);
+        $str    = mb_convert_kana(self::replaceRoman($str), 'a');
         foreach (self::$romans as $key => $value) {
             while (mb_strpos($str, $key) === 0) {
                 $result += $value;
